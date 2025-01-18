@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blox Fruits Clone</title>
+    <style>
+        body {
+            font-family: 'Arial Black', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: black;
+            color: white;
+            overflow: hidden;
+        }
+
+        video#backgroundVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        .title {
+            margin-top: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .items-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            width: 120px;
+            cursor: pointer;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .item img {
+            width: 100px;
+            height: 100px;
+            transition: transform 0.3s;
+        }
+
+        .item:hover img {
+            transform: scale(1.1);
+        }
+
+        .item.selected {
+            border-color: green;
+        }
+
+        .item-name {
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .selected-message {
+            margin-top: 10px;
+            font-size: 18px;
+            color: green;
+            text-align: center;
+            visibility: hidden;
+        }
+
+        .username-box {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .username-box label {
+            font-size: 16px;
+            white-space: nowrap;
+        }
+
+        .username-box input {
+            padding: 10px;
+            font-size: 14px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            flex: 1;
+            text-align: center;
+        }
+
+        .confirm-button {
+            background-color: blue;
+            color: white;
+            font-size: 14px;
+            font-family: 'Arial Black', Arial, sans-serif;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .confirm-button:hover {
+            filter: brightness(1.2);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .loading-message {
+            margin-top: 20px;
+            font-size: 16px;
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .success-message {
+            margin-top: 20px;
+            font-size: 16px;
+            color: green;
+            text-align: center;
+        }
+
+        .how-it-works {
+            font-size: 14px;
+            color: white;
+            background-color: black;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            display: none;
+            z-index: 1500;
+            position: absolute;
+            top: 30%;
+            border: 2px solid lightgreen;
+        }
+
+        .how-it-works p {
+            margin: 0;
+            font-family: 'Classic', sans-serif;
+        }
+
+        .how-it-works .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .how-it-works-button {
+            margin-top: 40px;
+            background-color: blue;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .how-it-works-button:hover {
+            filter: brightness(1.2);
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="backgroundVideo">
+        <source src="https://videocdn.cdnpk.net/videos/653def88-6a6e-5381-8524-12c9791771bb/horizontal/downloads/4k.mp4?filename=6917986_Motion%20Graphics_Motion%20Graphic_3840x2160.mp4&token=exp=1737181315~hmac=0451d52d171f90bfc53b0a9f19130b303e8cd7cc5abda73085f8190f6f51d331" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="title">SELECT PERMANENT/GAMEPASS FOR FREE</div>
+
+    <div class="items-container">
+        <div class="item" onclick="selectItem(this, 'Permanent Dragon')">
+            <img src="https://static.wikia.nocookie.net/roblox-blox-piece/images/4/43/DragonFruit.png/revision/latest?cb=20241218114129" alt="Permanent Dragon">
+            <div class="item-name">Permanent Dragon</div>
+        </div>
+        <div class="item" onclick="selectItem(this, 'Permanent Kitsune')">
+            <img src="https://static.wikia.nocookie.net/roblox-blox-piece/images/c/c3/KitsuneFruit.png/revision/latest?cb=20241223162956" alt="Permanent Kitsune">
+            <div class="item-name">Permanent Kitsune</div>
+        </div>
+        <div class="item" onclick="selectItem(this, 'Permanent Leopard')">
+            <img src="https://static.wikia.nocookie.net/roblox-blox-piece/images/8/8c/LeopardFruit.png/revision/latest?cb=20231027115615" alt="Permanent Leopard">
+            <div class="item-name">Permanent Leopard</div>
+        </div>
+        <div class="item" onclick="selectItem(this, 'Permanent Gas')">
+            <img src="https://static.wikia.nocookie.net/roblox-blox-piece/images/7/7e/GasFruit.png/revision/latest?cb=20241223162315" alt="Permanent Gas">
+            <div class="item-name">Permanent Gas</div>
+        </div>
+        <div class="item" onclick="selectItem(this, 'Permanent Yeti')">
+            <img src="https://static.wikia.nocookie.net/roblox-blox-piece/images/1/14/YetiFruit.png/revision/latest?cb=20241226020230" alt="Permanent Yeti">
+            <div class="item-name">Permanent Yeti</div>
+        </div>
+        <div class="item" onclick="selectItem(this, '2x Money')">
+            <img src="https://tr.rbxcdn.com/180DAY-63a5bf6ea7e029c50bd82024ac2beae4/150/150/Image/Webp/noFilter" alt="2x Money">
+            <div class="item-name">2x Money</div>
+        </div>
+        <div class="item" onclick="selectItem(this, '2x Boss Drop')">
+            <img src="https://tr.rbxcdn.com/180DAY-ff811a03ac90fe123e7bb1789bf188f0/150/150/Image/Webp/noFilter" alt="2x Boss Drop">
+            <div class="item-name">2x Boss Drop</div>
+        </div>
+        <div class="item" onclick="selectItem(this, '2x Mystery')">
+            <img src="https://tr.rbxcdn.com/180DAY-acf0a1f1983c30f7ccded0c756845f36/150/150/Image/Webp/noFilter" alt="2x Mystery">
+            <div class="item-name">2x Mystery</div>
+        </div>
+        <div class="item" onclick="selectItem(this, 'Fast Boat')">
+            <img src="https://tr.rbxcdn.com/180DAY-021c08aab80ee2cbdba77de1fd128a7a/150/150/Image/Webp/noFilter" alt="Fast Boat">
+            <div class="item-name">Fast Boat</div>
+        </div>
+    </div>
+
+    <div id="selectedMessage" class="selected-message"></div>
+
+    <div class="username-box">
+        <label for="username">Username (Username To Receive Gift):</label>
+        <input type="text" id="username" placeholder="Enter Your Username">
+    </div>
+    <button class="confirm-button" onclick="confirmSelection()">Confirm</button>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div id="loadingProgress">Loading... 0%</div>
+        <div class="loading-message" id="loadingMessage">Please wait, processing your request...</div>
+    </div>
+
+    <div id="successMessage" class="success-message" style="visibility: hidden;">Gift Request successfully sent into admin for <span id="selectedGift"></span>!</div>
+
+    <button class="how-it-works-button" onclick="showHowItWorks()">HOW IT WORKS?</button>
+
+    <div class="how-it-works" id="howItWorks">
+        <span class="close-btn" onclick="closeHowItWorks()">X</span>
+        <h3>HOW IT WORKS?</h3>
+        <p>Choose whether you want Permanent Fruits or a Gamepass. Once you've decided, enter your username in the field below. After entering and confirming your username, the admins of Blox Fruits will see it.</p>
+        <p>When the admins are online and playing Blox Fruits, they will use your username to send the gift you selected via global gifting.</p>
+        <p>That's it!</p>
+    </div>
+
+    <script>
+        let selectedItemName = '';
+
+        function selectItem(item, itemName) {
+            const items = document.querySelectorAll('.item');
+            items.forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+            selectedItemName = itemName;
+            document.getElementById('selectedMessage').textContent = `${itemName} selected!`;
+            document.getElementById('selectedMessage').style.visibility = 'visible';
+        }
+
+        function confirmSelection() {
+            const username = document.getElementById('username').value;
+            if (!username || !selectedItemName) {
+                alert('Please select an item and enter your username!');
+                return;
+            }
+
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.style.display = 'flex';
+
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += 10;
+                document.getElementById('loadingProgress').textContent = `Loading... ${progress}%`;
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    displaySuccessMessage();
+                }
+            }, 1000);
+
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+            }, 10000); // 10 seconds for progress bar
+        }
+
+        function displaySuccessMessage() {
+            const successMessage = document.getElementById('successMessage');
+            successMessage.textContent = `Gift Request successfully sent into admin for ${selectedItemName}!`;
+            successMessage.style.visibility = 'visible';
+            setTimeout(() => {
+                successMessage.style.visibility = 'hidden';
+            }, 3000); // 3 seconds
+        }
+
+        function showHowItWorks() {
+            document.getElementById('howItWorks').style.display = 'block';
+        }
+
+        function closeHowItWorks() {
+            document.getElementById('howItWorks').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
